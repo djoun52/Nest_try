@@ -1,4 +1,14 @@
-import { Controller, Delete, Get, Post, Put, Req, Res } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Req,
+  Res
+} from "@nestjs/common";
+
 import { Request, Response } from "express";
 
 @Controller("todo")
@@ -10,10 +20,7 @@ export class TodoController {
   }
 
   @Get("V2")
-  getTodosV2(
-		@Req() request: Request, 
-		@Res() response: Response
-	){
+  getTodosV2(@Req() request: Request, @Res() response: Response) {
     console.log("Récupérer la liste de todos");
     response.status(205);
     response.json({
@@ -22,8 +29,9 @@ export class TodoController {
   }
 
   @Post()
-  addTodo() {
+  addTodo(@Body() newTodo) {
     console.log("Ajouter un Todo à la liste de todos");
+    console.log(newTodo);
     return "Add TODO";
   }
 
