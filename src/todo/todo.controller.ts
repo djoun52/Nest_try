@@ -1,48 +1,42 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
   Post,
-  Put,
-  Req,
-  Res
-} from "@nestjs/common";
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { TodoService } from './todo.service';
+import { CreateTodoDto } from './dto/create-todo.dto';
+import { UpdateTodoDto } from './dto/update-todo.dto';
 
-import { Request, Response } from "express";
-
-@Controller("todo")
+@Controller('todo')
 export class TodoController {
-  @Get()
-  getTodos() {
-    console.log("Récupérer la liste de todos");
-    return "Liste des TODOS";
-  }
-
-  @Get("V2")
-  getTodosV2(@Req() request: Request, @Res() response: Response) {
-    console.log("Récupérer la liste de todos");
-    response.status(205);
-    response.json({
-      contenu: `je suis une réponse généré à partir de l'objet Response de express `
-    });
-  }
+  constructor(private readonly todoService: TodoService) {}
 
   @Post()
-  addTodo(@Body() newTodo) {
-    console.log("Ajouter un Todo à la liste de todos");
-    console.log(newTodo);
-    return "Add TODO";
+  create(@Body() createTodoDto: CreateTodoDto) {
+    return this.todoService.create(createTodoDto);
   }
 
-  @Delete()
-  deleteTodo() {
-    console.log("Suprimer un Todo de la liste de todos");
-    return "Delete TODO";
+  @Get()
+  findAll() {
+    return this.todoService.findAll();
   }
-  @Put()
-  modifierTodo() {
-    console.log("Modifier un Todo de la liste de todos");
-    return "Update TODO";
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.todoService.findOne(+id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
+    return this.todoService.update(+id, updateTodoDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.todoService.remove(+id);
   }
 }
