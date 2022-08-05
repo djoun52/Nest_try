@@ -21,6 +21,12 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('/login')
+  findoneByEmail(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto);
+    return this.usersService.create(createUserDto);
+  }
+
   @Get()
   findAll() {
     console.log('coucou');
